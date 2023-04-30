@@ -1,17 +1,20 @@
 import React from 'react';
-import { useState,useEffect } from 'react';
+import { useState } from 'react';
 
 import './index.scss';
 import { Success } from './components/Success';
 import { Users } from './components/Users';
 
-//  список пользователей: https://reqres.in/api/users
 
 function App() {
 
   const [users, setUsers] = useState([])
 
+  const [invites, setInvites] = useState([])
+
   const [isLoading, setisLoading] = useState(true)
+
+  const [success, steSuccess] = useState(false)
 
   const [searchValue, SetSearchValue] = useState('')
 
@@ -39,7 +42,26 @@ function App() {
   }, [])
 
   const onChangeValue = (e) => {
+
     SetSearchValue(e.target.value);
+
+  }
+
+  const onClickInvite = (id) => {
+
+    if (invites.includes(id)) {
+
+      setInvites(prev => prev.filter(_id => _id !==  id) )
+
+    } else {
+
+      setInvites((prev) => [...prev, id])
+
+    }
+  }
+
+  const onClickSendInvites = () => {
+    steSuccess(true)
   }
 
 
@@ -47,9 +69,25 @@ function App() {
 
     <div className="App">
 
-      <Users items={users} isLoading={isLoading} searchValue={searchValue} onChangeValue={onChangeValue}/>
+      {success ? (
+        <Success  count ={invites.length} /> 
+      ) : (
 
-      {/* <Success /> */}
+        <Users
+         items={users} 
+         isLoading={isLoading} 
+         searchValue={searchValue} 
+         onChangeValue={onChangeValue}
+         invites={invites}
+         onClickInvite={onClickInvite}
+         onClickSendInvites={onClickSendInvites}
+         />
+
+      )
+    
+    }
+
+
 
     </div>
 

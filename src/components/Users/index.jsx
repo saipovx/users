@@ -2,7 +2,7 @@ import React from 'react';
 import { Skeleton } from './Skeleton';
 import { User } from './User';
 
-export const Users = ({ items, isLoading, searchValue, onChangeValue }) => {
+export const Users = ({ items, isLoading, searchValue, onChangeValue , invites, onClickInvite, onClickSendInvites}) => {
  
   console.log(searchValue);
  
@@ -27,7 +27,6 @@ export const Users = ({ items, isLoading, searchValue, onChangeValue }) => {
           <Skeleton />
           <Skeleton />
           <Skeleton />
-          <Skeleton />
         </div>
 
       ) : (
@@ -47,7 +46,7 @@ export const Users = ({ items, isLoading, searchValue, onChangeValue }) => {
 
           }).map((obj) => (
 
-              <User key={obj.id} {...obj} />
+              <User onClickInvite={onClickInvite} isinvited={invites.includes(obj.id)} key={obj.id} {...obj} />
 
             ))}
           
@@ -55,8 +54,18 @@ export const Users = ({ items, isLoading, searchValue, onChangeValue }) => {
 
       )}
 
+{invites.length > 0 && (
 
-      <button className="send-invite-btn">Отправить приглашение</button>
+      <button 
+      
+      onClick={onClickSendInvites}
+
+      className="send-invite-btn" >Отправить приглашение</button>
+    )
+}
+
+
+
 
 
     </>
